@@ -1,7 +1,10 @@
 #!/bin/bash
 #bridge composeup_default
 
-default_network="composeup_default"
+#koalac
+#default_network="composeup_default"
+#asus
+default_network="bridge"
 target_container="test01"
 link_mysql="mysql5.6.16"
 

@@ -98,7 +98,7 @@
 
 	<build>
                 <!-- 决定jar包名，如果没有此项则由artifactId+version定义jar包名 -->
-                <finalName>jpa-mybatis-${version}</finalName>
+                <finalName>jpa-mybatis-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

@@ -63,11 +63,26 @@ public class StoreServiceImpl implements StoreService {
 		query.setParameter(1, id);
 		
 		query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);//必须有此转换才能使用"row.get(key)"
-		
 		//List<Store> rsItem=new ArrayList<Store>();
-		@SuppressWarnings("unused")
+		//@SuppressWarnings("unused")
 		Object stObj = query.getSingleResult();//字符数组的形式：[160105, 40, 35, 5]
 		//rsItem.add((Store) stObj);
+		
+		Map<?, ?> row=(Map<?, ?>)stObj;
+		Store entity = new Store();
+		entity.setId(Long.valueOf(String.valueOf(row.get("id"))));
+		entity.setLoginName((String)row.get("login_name"));
+		entity.setStoreName((String)row.get("store_name"));
+		entity.setType((Byte)row.get("type"));
+		
+		entity.setTimeDiamond(BigDecimal.valueOf(Double.valueOf(row.get("time_diamond").toString())));
+		entity.setAddress(row.get("address").toString());
+		entity.setStatus(Byte.valueOf(row.get("status").toString()));
+		entity.setAddTime((Integer)row.get("add_time"));
+		em.close();
+		return entity;
+		
+		/*
 		
 		@SuppressWarnings("unchecked")
 		List<Store> list = query.getResultList();
@@ -90,6 +105,7 @@ public class StoreServiceImpl implements StoreService {
 
         em.close();
         return rsList.get(0);
+        */
 	}
 	
 	public Store findDetailInfo4aById(Long id){
