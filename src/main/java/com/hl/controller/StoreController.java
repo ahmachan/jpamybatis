@@ -69,7 +69,18 @@ public class StoreController {
 	@RequestMapping(value = "/detail4/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "根据id查询用户")
 	public Map<String, Object> getDetail4ById(@PathVariable Long id) {
-		Object data = storeService.findDetailInfo4aById(id);
+		Object data = (Object)storeService.findDetailInfo4ById(id);
+		ResponseMap<String, Object> resMap =new ResponseMap<String, Object>();
+		if(data == null){
+			return resMap.FailedResponse(data);
+		}
+		return resMap.SuccessResponse(data);
+	}
+	
+	@RequestMapping(value = "/detail4a/{id}", method = RequestMethod.GET)
+	@ApiOperation(value = "根据id查询用户")
+	public Map<String, Object> getDetail4aById(@PathVariable Long id) {
+		Object data = (Object)storeService.findDetailInfo4aById(id);
 		//Integer res = (data==null)?0:1;
 		//return new ResponseResult<Store>(data,res);
 		ResponseMap<String, Object> resMap =new ResponseMap<String, Object>();
@@ -77,6 +88,14 @@ public class StoreController {
 			return resMap.FailedResponse(data);
 		}
 		return resMap.SuccessResponse(data);
+	}
+	
+	@RequestMapping(value = "/detail4b/{id}", method = RequestMethod.GET)
+	@ApiOperation(value = "根据id查询用户")
+	public ResponseResult<Object> getDetail4bById(@PathVariable Long id) {
+		Object data = (Object)storeService.findDetailInfo4ById(id);
+		Integer res = (data==null)?0:1;
+		return new ResponseResult<Object>(data,res);		
 	}
 
 	@RequestMapping(value = "/detail5/{id}", method = RequestMethod.GET)
@@ -124,7 +143,7 @@ public class StoreController {
 		return new ResponseResult<Integer>(null,intRes);
 	}
 	
-	@RequestMapping(value = "/list/", method = RequestMethod.GET)
+	@RequestMapping(value = "/list/?", method = RequestMethod.GET)
 	@ApiOperation(value = "商家列表")
 	public ResponseResult<List<Store>> getStoreList() {
 		return new ResponseResult<List<Store>>(storeService.getStoreList());
@@ -134,6 +153,13 @@ public class StoreController {
 	@ApiOperation(value = "商家列表")
 	public ResponseResult<List<Store>> getAllStore() {
 		return new ResponseResult<List<Store>>(storeService.getAllStore());
+	}
+	
+	//getJpaSql3List
+	@RequestMapping(value = "/jpaSql3List/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家列表")
+	public ResponseResult<List<Store>> getJpaSql3List() {
+		return new ResponseResult<List<Store>>(storeService.getJpaSql3List());
 	}
 	
 	@RequestMapping(value = "/jpaSql4List/", method = RequestMethod.GET)

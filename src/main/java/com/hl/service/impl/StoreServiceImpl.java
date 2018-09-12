@@ -54,59 +54,65 @@ public class StoreServiceImpl implements StoreService {
 		return storeRepository.getStoreDetail3ById(id);
 	}
 
-	public Object findDetailInfo4aById(Long id){
-
+	public Store findDetailInfo4ById(Long id) {
 		javax.persistence.Query query = em.createNativeQuery(
-				"SELECT id as Id,login_name as LoginName,store_name as StoreName,type as Type,time_diamond as TimeDiamond,address as Address,status as Status,add_time as addTime "
+				"SELECT id,login_name,store_name,type,time_diamond,address,status,add_time "
+				+ "FROM t_store "
+				+ "WHERE id=?1"
+				);
+		query.setParameter(1, id);
+		
+		query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);//必须有此转换才能使用"row.get(key)"
+		
+		//List<Store> rsItem=new ArrayList<Store>();
+		@SuppressWarnings("unused")
+		Object stObj = query.getSingleResult();//字符数组的形式：[160105, 40, 35, 5]
+		//rsItem.add((Store) stObj);
+		
+		@SuppressWarnings("unchecked")
+		List<Store> list = query.getResultList();
+		List<Store> rsList=new ArrayList<Store>();
+		for (Object jpaObj : list) {
+			Map<?, ?> row=(Map<?, ?>)jpaObj;
+			Store entity = new Store();
+			entity.setId(Long.valueOf(String.valueOf(row.get("id"))));
+			entity.setLoginName((String)row.get("login_name"));
+			entity.setStoreName((String)row.get("store_name"));
+			entity.setType((Byte)row.get("type"));
+			
+			entity.setTimeDiamond(BigDecimal.valueOf(Double.valueOf(row.get("time_diamond").toString())));
+			entity.setAddress(row.get("address").toString());
+			entity.setStatus(Byte.valueOf(row.get("status").toString()));
+			entity.setAddTime((Integer)row.get("add_time"));
+		
+			rsList.add(entity);
+		}
+
+        em.close();
+        return rsList.get(0);
+	}
+	
+	public Store findDetailInfo4aById(Long id){
+		javax.persistence.Query query = em.createNativeQuery(
+				"SELECT id,login_name,store_name,type,time_diamond,address,status,add_time "
 						+ "FROM t_store "
 						+ "WHERE id=?1"
 				);
 		query.setParameter(1, id);
 		//Store rows = query.getSingleResult();//字符数组的形式：[160105, 40, 35, 5]
-		@SuppressWarnings("unchecked")
-		List<Object> rows = query.getResultList();
-		Store entity = new Store();
-		entity.setId(Long.valueOf(String.valueOf(rows.get(0))));
-		entity.setLoginName((String)rows.get(1));
-		entity.setStoreName((String)rows.get(2));
-		entity.setType((Byte)rows.get(3));
-		entity.setTimeDiamond(BigDecimal.valueOf((Double)rows.get(4)));
-		entity.setAddress((String)rows.get(5));
-		entity.setStatus((Byte)rows.get(6));
-		entity.setAddTime((Integer)rows.get(7));
+		//@SuppressWarnings({ "unchecked", "unused" })
+		Object[] rows = (Object[]) query.getSingleResult();
+			
+		Store entity = new Store();		
+		entity.setId(Long.valueOf(String.valueOf(rows[0].toString())));
+		entity.setLoginName((String)rows[1].toString());
+		entity.setStoreName((String)rows[2].toString());
+		entity.setType(Byte.valueOf(rows[3].toString()));
+		entity.setTimeDiamond(BigDecimal.valueOf(Double.valueOf(rows[4].toString())));
+		entity.setAddress((String)rows[5].toString());
+		entity.setStatus(Byte.valueOf(rows[6].toString()));
+		entity.setAddTime(Integer.valueOf(rows[7].toString()));
 		return entity;
-	}
-	
-	public Store findDetailInfo4ById(Long id) {
-		javax.persistence.Query query = em.createNativeQuery(
-				"SELECT id as Id,login_name as LoginName,store_name as StoreName,type as Type,time_diamond as TimeDiamond,address as Address,status as Status,add_time as addTime "
-				+ "FROM t_store "
-				+ "WHERE id=?1"
-				);
-		query.setParameter(1, id);
-		//List<Store> result = new ArrayList<Store>();
-		Store jpaObj = (Store)query.getSingleResult();//字符数组的形式：[160105, 40, 35, 5]
-		//List<Object[]> rows = query.getResultList();
-//	
-//		for(Object[] obj : rows){
-//			Store entity = new Store();
-//			
-//			Map<String,Object> row = (Map<String, Object>) obj;  
-//			entity.setId(Long.valueOf(String.valueOf(row.get("id"))));
-//			entity.setLoginName((String)row.get("login_name"));
-//			entity.setStoreName((String)row.get("store_name"));
-//			entity.setType((Byte)row.get("type"));
-//			entity.setTimeDiamond(BigDecimal.valueOf((Double)row.get("time_diamond")));
-//			entity.setAddress((String)row.get("address"));
-//			entity.setStatus((Byte)row.get("status"));
-//			entity.setAddTime((Integer)row.get("add_time"));
-//			result.add(entity);
-//		}
-
-	
-		//List<Store> item = query.unwrap(SQLQuery.class).setResultTransformer(Transformers.aliasToBean(Store.class)).list();
-		return jpaObj;
-		
 	}
 	
 	public Store findDetailInfo5ById(Long id) {
@@ -127,7 +133,7 @@ public class StoreServiceImpl implements StoreService {
 	
 	public Store findDetailInfo7ById(Long id) {
 		javax.persistence.Query query = em.createQuery(
-				"SELECT s.id,s.loginName,s.storeName,s.timeDiamond FROM Store s WHERE s.id=?1"
+				"SELECT s.id,s.loginName,s.storeName,s.type,s.address,s.timeDiamond,s.status,s.addTime FROM Store s WHERE s.id=?1"
 				);
 		query.setParameter(1, id);
 		return (Store) query.getSingleResult();
@@ -195,14 +201,18 @@ public class StoreServiceImpl implements StoreService {
 		List<Store> rsList=new ArrayList<Store>();
 		for (Object jpaObj : list) {
 			Map<?, ?> row=(Map<?, ?>)jpaObj;
-			Store message = new Store();
-			message.setId(Long.valueOf(String.valueOf(row.get("id"))));
-			message.setLoginName((String)row.get("login_name"));
-			message.setStoreName((String)row.get("store_name"));
-			message.setType((Byte)row.get("type"));
-			message.setTimeDiamond(BigDecimal.valueOf((Double)row.get("time_diamond")));
-			message.setAddTime((Integer)row.get("add_time"));
-			rsList.add(message);
+			Store entity = new Store();
+			entity.setId(Long.valueOf(String.valueOf(row.get("id"))));
+			entity.setLoginName((String)row.get("login_name"));
+			entity.setStoreName((String)row.get("store_name"));
+			entity.setType((Byte)row.get("type"));
+			
+			entity.setTimeDiamond(BigDecimal.valueOf(Double.valueOf(row.get("time_diamond").toString())));
+			entity.setAddress(row.get("address").toString());
+			entity.setStatus(Byte.valueOf("1"));
+			entity.setAddTime((Integer)row.get("add_time"));
+		
+			rsList.add(entity);
 		}
 
         em.close();

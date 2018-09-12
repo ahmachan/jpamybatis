@@ -19,7 +19,7 @@ public interface StoreService {
 	
 	Store findDetailInfo4ById(Long id);
 	
-	Object findDetailInfo4aById(Long id);
+	Store findDetailInfo4aById(Long id);
 
 	Store findDetailInfo5ById(Long id);
 	
