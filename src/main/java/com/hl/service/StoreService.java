@@ -3,7 +3,6 @@ package com.hl.service;
 import java.util.List;
 
 import com.hl.model.Store;
-import com.hl.model.StoreSimpleVo;
 
 public interface StoreService {
 
@@ -37,11 +36,28 @@ public interface StoreService {
 	
 	List<Store> getJpaSql2List();
 	
-	List<Store> getJpaSql3List();
+	List<Store> getJpaSql3List();	
+	List<Store> getJpaSql3aList();	
+	List<Object[]> getJpaSql3bList();
 	
-	List<Store> getJpaSql4List();
+	List<Store> getJpaSql4List();	
+	List<Store> getJpaSql4aList();	
+	List<Object[]> getJpaSql4bList();
 
-	List<Store> getJpaSql5List();
+	List<Store> getJpaHqlList();
 	
-	List<StoreSimpleVo> findJpaHqlList();
+	List<Store> getJpaHql2List();	
+	List<Store> getJpaHql2aList();	
+	List<Store> getJpaHql2bList();	
+	List<Object[]> getJpaHql2cList();
+	
+	List<Store> getJpaHql3List();	
+	List<Store> getJpaHql3aList();	
+	List<Store> getJpaHql3bList();	
+	List<Object[]> getJpaHql3cList();
+	
+	List<Store> getStoreListByTypesWithPages(byte typeCate,int pageNo,int pageSize);	
+	Object getStoreCountByTypes(byte typeCate);
+	
+	Integer updateStoreByFields(Long id,String storeName,String address);
 }

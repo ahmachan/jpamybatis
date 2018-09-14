@@ -2,7 +2,7 @@
 
 debug_port="8081"
 project_version="0.0.1-SNAPSHOT"
-jar_file="./target/jpa-mybatis-${project_version}.jar"
+jar_file="$(pwd)/target/jpa-mybatis-${project_version}.jar"
 
 echo "on eclipse,Remote Java Application -> new -> Connection Type:Standard(Socket Attach);Host:127.0.0.1;Port:8096(docker 8096:8081)"
 echo "postman:http://127.0.0.1:8096/stores/detail/2"

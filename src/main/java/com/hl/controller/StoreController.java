@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hl.model.Store;
-import com.hl.model.StoreSimpleVo;
 import com.hl.service.StoreService;
 import com.hl.utils.ResponseMap;
 import com.hl.utils.ResponseResult;
@@ -138,7 +137,6 @@ public class StoreController {
 		@PathVariable Long storeId,
 		@RequestParam(value = "address", required = true,defaultValue="") String address
 	) {
-		
 		Integer intRes = storeService.modifyAddress(storeId, address);
 		return new ResponseResult<Integer>(null,intRes);
 	}
@@ -155,11 +153,22 @@ public class StoreController {
 		return new ResponseResult<List<Store>>(storeService.getAllStore());
 	}
 	
-	//getJpaSql3List
 	@RequestMapping(value = "/jpaSql3List/", method = RequestMethod.GET)
 	@ApiOperation(value = "商家列表")
 	public ResponseResult<List<Store>> getJpaSql3List() {
 		return new ResponseResult<List<Store>>(storeService.getJpaSql3List());
+	}
+	
+	@RequestMapping(value = "/jpaSql3aList/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家列表")
+	public ResponseResult<List<Store>> getJpaSql3aList() {
+		return new ResponseResult<List<Store>>(storeService.getJpaSql3aList());
+	}
+
+	@RequestMapping(value = "/jpaSql3bList/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家列表")
+	public ResponseResult<List<Object[]>> getJpaSql3bList() {
+		return new ResponseResult<List<Object[]>>(storeService.getJpaSql3bList());
 	}
 	
 	@RequestMapping(value = "/jpaSql4List/", method = RequestMethod.GET)
@@ -168,18 +177,101 @@ public class StoreController {
 		return new ResponseResult<List<Store>>(storeService.getJpaSql4List());
 	}
 	
-	@RequestMapping(value = "/jpaSql5List/", method = RequestMethod.GET)
+	@RequestMapping(value = "/jpaSql4aList/", method = RequestMethod.GET)
 	@ApiOperation(value = "商家列表")
-	public ResponseResult<List<Store>> getJpaSql5List() {
-		
-		return new ResponseResult<List<Store>>(storeService.getJpaSql5List());
+	public ResponseResult<List<Store>> getJpaSql4aList() {
+		return new ResponseResult<List<Store>>(storeService.getJpaSql4aList());
 	}
 	
+	@RequestMapping(value = "/jpaSql4bList/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家列表")
+	public ResponseResult<List<Object[]>> getJpaSql4bList() {
+		return new ResponseResult<List<Object[]>>(storeService.getJpaSql4bList());
+	}
+	
+	//HqlList
 	@RequestMapping(value = "/jpaHqlList/", method = RequestMethod.GET)
 	@ApiOperation(value = "商家列表")
-	public ResponseResult<List<StoreSimpleVo>> findJpaHqlList() {
-		return new ResponseResult<List<StoreSimpleVo>>(storeService.findJpaHqlList());
+	public ResponseResult<List<Store>> getJpaHqlList() {
+		return new ResponseResult<List<Store>>(storeService.getJpaHqlList());
 	}
 	
+	//Hql2List
+	@RequestMapping(value = "/jpaHql2List/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家列表")
+	public ResponseResult<List<Store>> getJpaHql2List() {
+		return new ResponseResult<List<Store>>(storeService.getJpaHql2List());
+	}
 	
+	@RequestMapping(value = "/jpaHql2aList/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家列表")
+	public ResponseResult<List<Store>> getJpaHql2aList() {
+		return new ResponseResult<List<Store>>(storeService.getJpaHql2aList());
+	}
+	
+	@RequestMapping(value = "/jpaHql2bList/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家列表")
+	public ResponseResult<List<Store>> getJpaHql2bList() {
+		return new ResponseResult<List<Store>>(storeService.getJpaHql2bList());
+	}
+	
+	@RequestMapping(value = "/jpaHql2cList/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家列表")
+	public ResponseResult<List<Object[]>> getJpaHql2cList() {
+		return new ResponseResult<List<Object[]>>(storeService.getJpaHql2cList());
+	}
+	
+	//Hql3List
+	@RequestMapping(value = "/jpaHql3List/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家列表")
+	public ResponseResult<List<Store>> getJpaHql3List() {
+		return new ResponseResult<List<Store>>(storeService.getJpaHql3List());
+	}
+	
+	@RequestMapping(value = "/jpaHql3aList/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家列表")
+	public ResponseResult<List<Store>> getJpaHql3aList() {
+		return new ResponseResult<List<Store>>(storeService.getJpaHql3aList());
+	}
+	
+	@RequestMapping(value = "/jpaHql3bList/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家列表")
+	public ResponseResult<List<Store>> getJpaHql3bList() {
+		return new ResponseResult<List<Store>>(storeService.getJpaHql3bList());
+	}
+	
+	@RequestMapping(value = "/jpaHql3cList/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家列表")
+	public ResponseResult<List<Object[]>> getJpaHql3cList() {
+		return new ResponseResult<List<Object[]>>(storeService.getJpaHql3cList());
+	}
+	
+	@RequestMapping(value = "/listByTypes/{typeCate}/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家列表分页获取")
+	public ResponseResult<List<Store>> listByTypes(
+			@PathVariable Byte typeCate,
+			@RequestParam(name="begin",required=false,defaultValue="1") Integer begin,
+			@RequestParam(name="size",required=false,defaultValue="3") Integer size
+			) {
+		int start = begin;
+		int pageNumber=size;
+		return new ResponseResult<List<Store>>(storeService.getStoreListByTypesWithPages(typeCate, start, pageNumber));
+	}
+	
+	@RequestMapping(value = "/listByTypes/{typeCate}/count/", method = RequestMethod.GET)
+	@ApiOperation(value = "商家数据总数")
+	public ResponseResult<Object> listCountByTypes(@PathVariable Byte typeCate) {
+		return new ResponseResult<Object>(storeService.getStoreCountByTypes(typeCate));
+	}
+	
+	@RequestMapping(value = "/{storeId}/item", method = RequestMethod.POST)
+	@ApiOperation(value = "编辑商家信息")
+	public ResponseResult<Integer> updateStoreItem(
+		@PathVariable Long storeId,
+		@RequestParam(value = "storeName", required = true,defaultValue="") String storeName,
+		@RequestParam(value = "address", required = false,defaultValue="") String address
+	) {
+		Integer objRes = storeService.updateStoreByFields(storeId, storeName, address);
+		return new ResponseResult<Integer>(objRes);
+	}
 }
