@@ -246,7 +246,7 @@ public class StoreController {
 		return new ResponseResult<List<Object[]>>(storeService.getJpaHql3cList());
 	}
 	
-	@RequestMapping(value = "/listByTypes/{typeCate}/", method = RequestMethod.GET)
+	@RequestMapping(value = "/listByTypes/{typeCate:[1-9]+}/", method = RequestMethod.GET)
 	@ApiOperation(value = "商家列表分页获取")
 	public ResponseResult<List<Store>> listByTypes(
 			@PathVariable Byte typeCate,
@@ -258,7 +258,7 @@ public class StoreController {
 		return new ResponseResult<List<Store>>(storeService.getStoreListByTypesWithPages(typeCate, start, pageNumber));
 	}
 	
-	@RequestMapping(value = "/listByTypes/{typeCate}/count/", method = RequestMethod.GET)
+	@RequestMapping(value = "/listByTypes/{typeCate:[1-9]+}/count/", method = RequestMethod.GET)
 	@ApiOperation(value = "商家数据总数")
 	public ResponseResult<Object> listCountByTypes(@PathVariable Byte typeCate) {
 		return new ResponseResult<Object>(storeService.getStoreCountByTypes(typeCate));

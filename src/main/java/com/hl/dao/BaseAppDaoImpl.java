@@ -77,7 +77,9 @@ public class BaseAppDaoImpl<T,ID extends Serializable> implements BaseAppDao<T,I
 		System.out.println(sql+"--------sql语句-------------");
 		Query query=entityManager.createQuery(sql);
 		for (int i=0;i<filedList.size();i++){
-			query.setParameter(i+1,map.get(filedList.get(i)));
+			//query.setParameter(i+1,map.get(filedList.get(i)));
+			String key = filedList.get(i).toString();
+			query.setParameter(key,map.get(key));
 		}
 
 		return query.getSingleResult();
